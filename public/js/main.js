@@ -1,10 +1,15 @@
 const HelloVueApp = {
     methods: {
+        doInsertArticle() {
+            this.state = 1
+            this.articleTitle = ""
+            this.articleContent = ""
+            this.articleCategory = ""
+        },
         doReadArticle() {
             this.state = 0
         },
         doUpdateArticle(index) {
-            this.updateArticleId = this.articles[index].id
             this.articleTitle = this.articles[index].title
             this.articleContent = this.articles[index].content
             this.articleCategory = this.articles[index].categories.join(', ')
@@ -42,7 +47,7 @@ const HelloVueApp = {
                                     ,content: this.articleContent
                                     ,categories: this.articleCategory.split(/ *, */)}))
         },
-        updateArticle() {
+        updateArticle(index) {
             if (this.articleCategory == null) {
                 return;
             }
@@ -55,7 +60,7 @@ const HelloVueApp = {
                     this.cancelDoUpdateArticle()   
                 }
             })
-            xhr.open('PUT', `api/articles/${this.updateArticleId}`, true)
+            xhr.open('PUT', `api/articles/${this.articles[index].id}`, true)
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xhr.send(JSON.stringify({title: this.articleTitle
                                     ,content: this.articleContent
@@ -80,7 +85,6 @@ const HelloVueApp = {
             articleTitle: null,
             articleContent: null,
             articleCategory: null,
-            updateArticleId: null,
             state: 0,
             selectedUpdateRow: null
         }
@@ -90,4 +94,6 @@ const HelloVueApp = {
     }
 }
 
-Vue.createApp(HelloVueApp).mount('#app')
+const app = Vue.createApp(HelloVueApp)
+
+app.mount('#app')
